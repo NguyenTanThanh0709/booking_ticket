@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<!--  main-fragment (title, otherStaticResources, header, nav, mainContent, footer)  -->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout-admin :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #home-static-resources},
+                                                ~{:: #home-navbar},
+                                                ~{:: #home-sidebar},
+                                                ~{:: #home-main-content},
+                                                ~{:: #home-spinner}
+                                               )}">
+
+<head>
+    <title>Title of Home Page</title>
+    <th:block id="home-static-resources">
+
+    </th:block>
+</head>
+<body>
+
+<div id="home-spinner" th:replace="~{/fragments/app-fragments :: spinner}">
+</div>
+
+<div id="home-navbar" th:replace="~{/fragments/app-fragments :: navbar}">
+</div>
+
+<div id="home-sidebar" th:replace="~{/fragments/app-fragments :: sidebar}">
+</div>
+
+<div id="home-main-content">
+    <div class="row g-4">
+        <div class="col-sm-12 mt-2 col-xl-12">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">Xem chi tiết suất chiếu của rạp và phim</h6>
+                <select id="suatchieu_rap" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                    <option value ="-1" selected>Chọn rap muốn xem</option>
+                    <option th:each="i : ${raps}" th:value="${i.id}" th:text="${i.tenRap}">
+                    </option>
+                </select>
+
+                <select id="suatchieu_phim" class="mb-2 form-select form-select-sm" aria-label=".form-select-sm example">
+                    <option value ="-1" selected>Chọn phim muốn xe</option>
+                    <option th:each="i : ${phims}" th:value="${i.id}" th:text="${i.tenphim}">
+                    </option>
+                </select>
+                <button onclick="xemsuatchieu()" class="btn btn-primary mb-2">Xem</button>
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="col-12">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalsuatchieu">Thêm Suất Chiếu</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="modalsuatchieu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalsuatchieu_">Thêm suất chiếu</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+
+
+                                    <form class="m-4"  method="post" th:action="@{/api/admin/themsuatchieu}">
+                                        <div class="row mb-3">
+                                            <label for="sc-id" class="col-sm-2 col-form-label">Mã</label>
+                                            <div class="col-sm-10">
+                                                <input type="hidden" class="form-control" value="-1"  id="sc-id" name="id">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="sc-ngaychieu" class="col-sm-2 col-form-label">Ngày chiếu</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" required class="form-control" id="sc-ngaychieu"  name="ngaychieu">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="sc-giochieu" class="col-sm-2 col-form-label">Giờ chiếu</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" required class="form-control" id="sc-giochieu"  name="giochieu">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="sc-info" class="col-sm-2 col-form-label">Info</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" required class="form-control" id="sc-info" name="info">
+                                            </div>
+                                        </div>
+
+                                        <select id="allphim" name="phim" class="mb-2 form-select form-select-sm" aria-label=".form-select-sm example">
+                                            <option value ="-1" selected>Chọn phim muốn thêm</option>
+                                            <option th:each="i : ${phims}" th:value="${i.id}" th:text="${i.tenphim}">
+                                            </option>
+                                        </select>
+
+                                        <select onchange="hienthiphong(this)" name="rap" id="allrap" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                            <option value ="-1" selected>Chọn rap muốn thêm</option>
+                                            <option th:each="i : ${raps}" th:value="${i.id}" th:text="${i.tenRap}">
+                                            </option>
+                                        </select>
+
+                                        <select  id="allphongrap" name="phong" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                            <option value ="-1" selected>Chọn phong muốn thêm</option>
+
+                                        </select>
+
+
+
+
+
+                                        <button type="submit"  class="btn btn-primary">UP</button>
+                                    </form>
+
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-light rounded h-100 p-4">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Ngày Chiếu</th>
+                                        <th scope="col">Thời Gian</th>
+
+                                        <th scope="col">Trạng thái</th>
+                                        <th scope="col">Xem Thông tin</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="danhsachsuatchieu">
+
+                                    <tr>
+                                        <td> </td>
+                                        <td> </td>
+                                        <td> </td>
+
+                                        <td><button class="btn btn-primary">Sửa Suất</button></td>
+
+
+                                    </tr>
+
+                                    </tbody>
+                                    <div class="modal fade" id="updatesuatchieu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modalsuatchieu__">Thêm suất chiếu</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+
+
+                                                <form class="m-6"  method="post" th:action="@{/api/admin/updatesc}">
+                                                    <div class="row mb-3">
+                                                        <label for="updatesc-id" class="col-sm-2 col-form-label">Mã</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="hidden" class="form-control" value=""  id="updatesc-id" name="id">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <label for="updatesc-ngaychieu" class="col-sm-2 col-form-label">Ngày chiếu</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" required class="form-control" id="updatesc-ngaychieu"  name="ngaychieu">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-3">
+                                                        <label for="updatesc-giochieu" class="col-sm-2 col-form-label">Giờ chiếu</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" required class="form-control" id="updatesc-giochieu"  name="giochieu">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <label for="updatesc-info" class="col-sm-2 col-form-label">Info</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" required class="form-control" id="updatesc-info" name="info">
+                                                        </div>
+                                                    </div>
+
+                                                    <button type="submit"  class="btn btn-primary">UP</button>
+                                                </form>
+
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

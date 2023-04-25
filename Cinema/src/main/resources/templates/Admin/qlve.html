@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<!--  main-fragment (title, otherStaticResources, header, nav, mainContent, footer)  -->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout-admin :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #home-static-resources},
+                                                ~{:: #home-navbar},
+                                                ~{:: #home-sidebar},
+                                                ~{:: #home-main-content},
+                                                ~{:: #home-spinner}
+                                               )}">
+
+<head>
+    <title>Title of Home Page</title>
+    <th:block id="home-static-resources">
+
+    </th:block>
+</head>
+<body>
+
+<div id="home-spinner" th:replace="~{/fragments/app-fragments :: spinner}">
+</div>
+
+<div id="home-navbar" th:replace="~{/fragments/app-fragments :: navbar}">
+</div>
+
+<div id="home-sidebar" th:replace="~{/fragments/app-fragments :: sidebar}">
+</div>
+
+<div id="home-main-content">
+    <div class="row g-4">
+        <div class="col-sm-12 mt-2 col-xl-12">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">Xem chi tiết Vé</h6>
+
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="col-12">
+                        <button onclick="vehandleadd()" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModalve">Thêm Vé</button>
+                        <!-- The Modal -->
+                        <div class="modal" id="myModalve">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+
+
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                        <form method="post" th:action="@{/api/admin/venew}">
+                                            <div class="row mb-3">
+                                                <label for="ve-id" class="col-sm-2 col-form-label">Mã</label>
+                                                <div class="col-sm-10">
+                                                    <input type="hidden" class="form-control" value=""  id="ve-id" name="id">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label for="ve-ten" class="col-sm-2 col-form-label">Tên Vé</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" required class="form-control" id="ve-ten"  name="tenRap">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="ve-noidung" class="col-sm-2 col-form-label">Nội dung</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" required class="form-control" id="ve-noidung"  name="noidung">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="ve-gia" class="col-sm-2 col-form-label">giá</label>
+                                                <div class="col-sm-10">
+                                                    <input type="number" required class="form-control" id="ve-gia" name="gia">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="ve-trangthai" class="col-sm-2 col-form-label">Trạng thái Vé</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" required class="form-control" id="ve-trangthai" name="trangthai">
+                                                </div>
+                                            </div>
+
+                                            <button type="submit"  class="btn btn-primary">UP</button>
+                                        </form>
+                                    </div>
+
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                        <button  type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-light rounded h-100 p-4">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Mã Vé</th>
+                                        <th scope="col">Tên Vé</th>
+                                        <th scope="col">Giá</th>
+                                        <th scope="col">Trạng Thái</th>
+                                        <th scope="col">Tổng tiền bán được</th>
+                                        <th scope="col">Sửa Thông tin</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <tr th:each="rap : ${listve}">
+                                        <th scope="row">[[${rap.id}]]</th>
+                                        <td>[[${rap.tenve}]]</td>
+                                        <td>[[${rap.giave}]]</td>
+                                        <td>[[${rap.trangthai}]]</td>
+                                        <td>[[${rap.tongtien()}]]</td>
+                                        <td><button data-bs-toggle="modal" data-bs-target="#myModalve" th:onclick="'vehandleupdate(' + ${rap.id} + ')'" class="btn btn-primary" >Sửa Vé</button></td>
+
+
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

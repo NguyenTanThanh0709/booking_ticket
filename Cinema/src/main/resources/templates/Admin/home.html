@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<!--  main-fragment (title, otherStaticResources, header, nav, mainContent, footer)  -->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout-admin :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #home-static-resources},
+                                                ~{:: #home-navbar},
+                                                ~{:: #home-sidebar},
+                                                ~{:: #home-main-content},
+                                                ~{:: #home-spinner}
+                                               )}">
+
+<head>
+  <title>Title of Home Page</title>
+  <th:block id="home-static-resources">
+
+  </th:block>
+</head>
+<body>
+
+<div id="home-spinner" th:replace="~{/fragments/app-fragments :: spinner}">
+</div>
+
+<div id="home-navbar" th:replace="~{/fragments/app-fragments :: navbar}">
+</div>
+
+<div id="home-sidebar" th:replace="~{/fragments/app-fragments :: sidebar}">
+</div>
+
+<div id="home-main-content">
+  <div class="row g-4">
+
+
+    <div class="col-sm-6 col-xl-6">
+      <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+        <i class="fa fa-chart-line fa-3x text-primary"></i>
+        <div class="ms-3">
+          <p class="mb-2">Doanh thu theo Rạp</p>
+          <h6 class="mb-0">$ [[${tongdoanhthurap}]]</h6>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-6">
+      <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+        <i class="fa fa-chart-pie fa-3x text-primary"></i>
+        <div class="ms-3">
+          <p class="mb-2">Doanh Thu theo Phim</p>
+          <h6 class="mb-0">$ [[${tongdoanhthuphim}]]</h6>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-sm-12 col-xl-12">
+      <div class="bg-light rounded h-100 p-4">
+        <h6 class="mb-4">Xem chi tiết doanh thu của hệ thống rạp</h6>
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
+                      data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
+                      aria-selected="true">Xem doanh thu theo rạp</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
+                    data-bs-target="#pills-contact" type="button" role="tab"
+                    aria-controls="pills-contact" aria-selected="false">Xem doanh thu theo Phim</button>
+          </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+            <div class="col-12">
+              <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">Doanh thu theo rạp </h6>
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                    <tr>
+                      <th scope="col">Mã Rạp</th>
+                      <th scope="col">Tên Rạp</th>
+                      <th scope="col">Địa chỉ</th>
+                      <th scope="col">Tổng Tiền</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr th:each="rap : ${listrap}">
+                      <th scope="row">[[${rap.id}]]</th>
+                      <td>[[${rap.tenRap}]]</td>
+                      <td>[[${rap.diaChi}]]</td>
+                      <td>[[${rap.gettongtien()}]]</td>
+
+                    </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+            <div class="col-12">
+              <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">Doanh thu theo phim</h6>
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                    <tr>
+                      <th scope="col">Mã Phim</th>
+                      <th scope="col">Tên Phim</th>
+                      <th scope="col">Ngày Khởi Chiếu</th>
+                      <th scope="col">Ngày Đóng</th>
+                      <th scope="col">Tổng Tiền</th>
+
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="phim : ${listphim}">
+                      <th scope="row">[[${phim.id}]]</th>
+                      <td>[[${phim.tenphim}]]</td>
+                      <td>[[${phim.ngaychieu}]]</td>
+                      <td>[[${phim.ngaydong}]]</td>
+                      <td>[[${phim.gettongtien()}]]</td>
+
+                    </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+
+
+
+</body>
+</html>

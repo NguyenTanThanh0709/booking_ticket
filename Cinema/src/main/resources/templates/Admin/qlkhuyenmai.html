@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!--  main-fragment (title, otherStaticResources, header, nav, mainContent, footer)  -->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout-admin :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #home-static-resources},
+                                                ~{:: #home-navbar},
+                                                ~{:: #home-sidebar},
+                                                ~{:: #home-main-content},
+                                                ~{:: #home-spinner}
+                                               )}">
+
+<head>
+    <title>Title of Home Page</title>
+    <th:block id="home-static-resources">
+
+    </th:block>
+</head>
+<body>
+
+<div id="home-spinner" th:replace="~{/fragments/app-fragments :: spinner}">
+</div>
+
+<div id="home-navbar" th:replace="~{/fragments/app-fragments :: navbar}">
+</div>
+
+<div id="home-sidebar" th:replace="~{/fragments/app-fragments :: sidebar}">
+</div>
+
+<div id="home-main-content">
+    <div class="row g-4">
+        <div class="col-sm-12 mt-2 col-xl-12">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">Xem chi tiết Khuyến Mãi</h6>
+
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="col-12">
+                        <button onclick="handleaddKM()" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#khuyenmaimodal">Thêm Khuyến Mãi</button>
+                        <div class="modal fade" id="khuyenmaimodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content" style="width: 670px;">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" >Modal title</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="container-fluid pt-4 w-100 px-4">
+                                            <div class="row w-100 g-4">
+                                                <div class="col-sm-12 w-100 col-xl-6">
+                                                    <div class="bg-light rounded h-100 p-4">
+                                                        <h6 class="mb-4">Tên Rap</h6>
+
+                                                        <form method="post" th:action="@{/api/admin/khuyenmaiu}" >
+                                                            <div class="row mb-3">
+                                                                <label  class="col-sm-2 col-form-label">Mã</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="hidden" class="form-control" value="-1" id="km-m" name="id">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label  class="col-sm-2 col-form-label">Tên </label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" required class="form-control" id="km-n" name="tenRap">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label class="col-sm-2 col-form-label">Ảnh </label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" required class="form-control" id="km-a" name="imgRap">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label class="col-sm-2 col-form-label">Tiền</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="number" required class="form-control" id="km-t" name="diaChi">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-3">
+                                                                <label  class="col-sm-2 col-form-label">Trạng thái </label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" required class="form-control" id="km-tt"  name="trangthai">
+                                                                </div>
+                                                            </div>
+
+                                                            <button type="submit" class="btn btn-primary">UP</button>
+                                                        </form>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-light rounded h-100 p-4">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Mã KM</th>
+                                        <th scope="col">Image KM</th>
+                                        <th scope="col">Tên KM</th>
+                                        <th scope="col">Giá</th>
+                                        <th scope="col">Trạng Thái</th>
+                                        <th scope="col">Sửa Thông tin</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <tr th:each="rap : ${listkMAI}">
+                                        <th scope="row">[[${rap.id}]]</th>
+                                        <td><img style="width: 54px;height: 50px;" th:src="@{${rap.img}}"/></td>
+                                        <td>[[${rap.tenkhuyenmai}]]</td>
+                                        <td>[[${rap.tienkhuyenmai}]]</td>
+                                        <td>[[${rap.trangthai}]]</td>
+                                        <td><button th:onclick="'handleupdateKM(' + ${rap.id} + ')'"  class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#khuyenmaimodal">Sửa KM</button></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

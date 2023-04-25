@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--  main-fragment (title, otherStaticResources, header, nav, mainContent, footer)  -->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout-admin :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #home-static-resources},
+                                                ~{:: #home-navbar},
+                                                ~{:: #home-sidebar},
+                                                ~{:: #home-main-content},
+                                                ~{:: #home-spinner}
+                                               )}">
+
+<head>
+    <title>Title of Home Page</title>
+    <th:block id="home-static-resources">
+
+    </th:block>
+</head>
+<body>
+
+<div id="home-spinner" th:replace="~{/fragments/app-fragments :: spinner}">
+</div>
+
+<div id="home-navbar" th:replace="~{/fragments/app-fragments :: navbar}">
+</div>
+
+<div id="home-sidebar" th:replace="~{/fragments/app-fragments :: sidebar}">
+</div>
+
+<div id="home-main-content">
+    <div class="col-sm-12 mt-2 col-xl-12">
+        <div class="bg-light rounded h-100 p-4">
+            <h6 class="mb-4">Xem chi tiết đánh giá của phim nào đó: ...</h6>
+
+            <select onchange="xemdanhsachdanhgia(this)" id="chonphimmuonxe" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                <option value ="-1" selected>Chọn Phim Muốn xem đánh giá</option>
+                <option th:each="i : ${listphim}" th:value="${i.id}" th:text="${i.tenphim}">
+                </option>
+            </select>
+
+            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                <div class="col-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Mã User</th>
+                                    <th scope="col">Tiêu Đề</th>
+                                    <th scope="col">Nội Dung</th>
+                                    <th scope="col">DELETE</th>
+                                </tr>
+                                </thead>
+                                <tbody id="listdanhgiaphim">
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!--  main-fragment (title, otherStaticResources, header, nav, mainContent, footer)  -->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #home-static-resources},
+                                                ~{:: #home-navmain},
+                                                ~{:: #home-navreponsive},
+                                                ~{:: #home-main-content},
+                                                ~{:: #home-footer}
+                                               )}">
+<head>
+    <title>Title of Home Page</title>
+    <th:block id="home-static-resources">
+
+
+        <link th:href="@{/css/style.css}" rel="stylesheet" />
+        <link th:href="@{/css/a.css}" rel="stylesheet" />
+        <link th:href="@{/css/slider.css}" rel="stylesheet" />
+        <link th:href="@{/css/ttuser.css}" rel="stylesheet" />
+    </th:block>
+</head>
+<body>
+
+<nav id="home-navmain" th:replace="~{/fragments/app-fragments :: nav-default}">
+
+</nav>
+
+<nav id="home-navreponsive" th:replace="~{/fragments/app-fragments :: nav-reponsive}">
+
+</nav>
+
+<div id="home-main-content" class="container">
+    <div class="title-info">
+        <h2 class="title-page mb-4 text">Thông tin cá nhân</h2>
+    </div>
+    <div class="user-info-wrapper">
+        <div class="user-profile-card">
+            <div class="group-avatar">
+                <img th:src="@{${user.avatar}}" salt="" />
+                <h5 class="user-name text">[[${user.user}]]</h5>
+            </div>
+            <div class="sovemua">
+                <p class="text">Vé đã mua</p>
+                <p style="color: rgb(232, 165, 39)">[[${soluongvedamua}]]</p>
+            </div>
+            <div class="tichdiem">
+                <p class="text">Tích điểm cá nhân</p>
+                <p style="color: rgb(28, 145, 135)">[[${user.diemtich}]]</p>
+            </div>
+        </div>
+
+        <div class="detail-wrapper">
+            <form th:action="@{/api/user/updateu}" th:object="${user}" method="POST" id="formSubmit_" enctype="multipart/form-data">
+                <div class="detail-info">
+                    <div class="info-box">
+                        <span class="text">Họ tên</span>
+                        <input type="hidden" name="id" id="id" th:value="${user.id}">
+                        <input
+                                type="text"
+                                name="user"
+                                id="user"
+                                 th:value="${user.user}"
+                                th:field="*{user}"
+                        />
+                    </div>
+                    <div class="info-box">
+                        <span class="text">Số điện thoại</span>
+                        <input
+                                type="text"
+                                name="sdt"
+                                id="sdt"
+                                th:field="*{sdt}"
+                                th:value="${user.sdt}"
+                        />
+                    </div>
+                    <div class="info-box">
+                        <span class="text">Email</span>
+                        <input
+                                type="email"
+                                name="email"
+                                id="email"
+                                th:field="*{email}"
+                                th:value="${user.email}"
+                        />
+                    </div>
+                    <div class="info-box">
+                        <span class="text">Password</span>
+                        <input
+                                type="text"
+                                name="pass"
+                                id="pass"
+                                th:field="*{pass}"
+                                th:value="${user.pass}"
+                        />
+                    </div>
+                    <div class="mb-3">
+                        <label for="avatar" class="form-label">Chọn Avatar</label>
+                        <input name="avatar" th:field="*{avatar}"  class="form-control" type="file" id="avatar" >
+                    </div>
+                </div>
+
+                <button id="btnAddOrUpdateNew_" type="submit" class="my-btn">
+                    Cập nhật thông tin
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="title-history">
+        <h2 class="title-page mb-4 text">Lịch sử mua vé phim</h2>
+    </div>
+    <div class="history-user">
+        <table class="content-table">
+            <thead>
+            <tr>
+                <th>Mã thanh toán</th>
+                <th>Tên phim</th>
+                <th>Tên vé and số lượng</th>
+                <th>Rạp</th>
+                <th>Thời gian</th>
+                <th>Tổng tiền</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr class="active-row" th:each="user : ${thanhtoanuser}">
+                <td>[[${user.id}]]</td>
+                <td>[[${user.phim_thanhtoan.tenphim}]]</td>
+                <td>[[${user.ve_thanhtoan.tenve}]] | [[${user.soluongve}]] </td>
+                <td>[[${user.rap_thanhtoan.tenRap}]]</td>
+                <td>[[${user.suatChieu_thanhtoan.thoiGian}]]</td>
+                <td>[[${user.tongtien}]]</td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<footer id="home-footer" th:replace="~{/fragments/app-fragments :: copyright}">
+
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

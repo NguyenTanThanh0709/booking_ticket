@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<!--  main-fragment (title, otherStaticResources, header, nav, mainContent, footer)  -->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #home-static-resources},
+                                                ~{:: #home-navmain},
+                                                ~{:: #home-navreponsive},
+                                                ~{:: #home-main-content},
+                                                ~{:: #home-footer}
+                                               )}">
+<head>
+  <title>Title of Home Page</title>
+  <th:block id="home-static-resources">
+
+
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+    <link th:href="@{/css/a.css}" rel="stylesheet" />
+    <link th:href="@{/css/slider.css}" rel="stylesheet" />
+    <link th:href="@{/css/ttuser.css}" rel="stylesheet" />
+  </th:block>
+</head>
+<body>
+
+<nav id="home-navmain" th:replace="~{/fragments/app-fragments :: nav-default}">
+
+</nav>
+
+<nav id="home-navreponsive" th:replace="~{/fragments/app-fragments :: nav-reponsive}">
+
+</nav>
+
+<div id="home-main-content" class="container">
+  <div th:style="'height: 10px'"></div>
+
+  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active" >
+        <img src="../assets/cinemabg2.jpg"  th:style="'border-radius: 20px !important'"  class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item" >
+        <img src="../assets/banner.jpg"  th:style="'border-radius: 20px !important'"  class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item" >
+        <img src="../assets/banner2.jpg"  th:style="'border-radius: 20px !important'"  class="d-block w-100" alt="...">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+
+
+  <div class="dangchieu">
+    <div class="mt-5 dang-sap-chieu text">
+      <h2 class="mb-0">Thông tin chi tiết phim</h2>
+    </div>
+
+    <div class="row">
+
+      <!--      THONG TIN CHI TIET PHIM-->
+      <div class="col-xl-8 col-md-6 ">
+
+        <!--        thong tin phim-->
+        <div class="row">
+          <div class="mt-5 dang-sap-chieu text">
+            <h2 class="mb-0" style="font-size: 19px;" >Chi tiết</h2>
+          </div>
+          <div class="col-xl-4  col-md-12">
+            <div class="block" style="width: 100%;position: relative;">
+              <img style="width: 100%" th:src="@{${film.anhphim}}">
+              <button class="play-bt " type="button" onclick="showModal()" >
+                <i class="fa-regular fa-circle-play"></i>
+              </button>
+              <!-- Modal -->
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5  class="modal-title" id="exampleModalLabel" th:text="${film.tenphim}">Name Film</h5>
+                    </div>
+                    <div class="modal-body trailer">
+
+                      <iframe style="height: 290px;" th:src="@{${film.trailer}}" class="w-100" frameborder="0" allowfullscreen crossorigin="anonymous"></iframe>
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-8 col-md-12 text" >
+            <h3 th:text="${film.tenphim}" id="data-film_id" th:attr="data-film_id=${film.id}">TEN PHIM</h3>
+            <div class="detailrate">
+              <i   style="
+    margin-right: 18px;
+    font-size: 30px;
+    color: yellow;
+"></i>
+              <div class="rating-value detail">
+                <strong>7/10</strong>
+                <div class="rating-view">
+                  <span th:text="${film.rating}" >45</span>
+                </div>
+              </div>
+              <a
+                      th:href="@{/comments/{id}(id=${film.id})}"
+                      style="color: #ffffff;
+    background-color: #f26b38;
+    border-color: #f26b38;
+    text-transform: uppercase;
+    height: 39px;
+    padding: 10px;
+    border-radius: 4px;">Đánh Giá</a>
+            </div>
+
+            <div class="detail-rating">
+                <span style="
+    margin-right: 15px;
+">
+                  <i class="icon-c18"></i>
+                </span>
+
+              <span style="
+    margin-right: 15px;
+">
+                <i class="fa-regular fa-clock"></i>
+                [[${film.thoiluong}]]
+              </span>
+
+
+            </div>
+            <div class="detail-info">
+              <div class="detail-info-row">
+                <label class="fs-5 text">Diễn viên: </label>
+                <div class=" text-dark fs-4 text detail-info-right">
+                  [[${film.dienvien}]]
+                </div>
+              </div>
+              <div class="detail-info-row">
+                <label class="fs-5 text">Đạo diễn: </label>
+                <div class="fs-4 text-dark text detail-info-right">
+                  [[${film.daodien}]]
+                </div>
+              </div>
+              <div class="detail-info-row">
+                <label class="fs-5 text">Quốc gia: </label>
+                <div class="fs-4 text-dark text detail-info-right">
+                  [[${film.daodien}]]
+                </div>
+              </div>
+              <div class="detail-info-row">
+                <label class="fs-5 text">Nhà xuất bản: </label>
+                <div class="fs-4 text-dark text detail-info-right">
+                  [[${film.nhaXuatBan_phim.tennhaxuatban}]]
+                </div>
+              </div>
+              <div class="detail-info-row">
+                <label class="fs-5 text">Thể loại: </label>
+                <div class="fs-4 text-dark text detail-info-right">
+                  [[${film.theloai}]]
+                </div>
+              </div>
+              <div class="detail-info-row">
+                <label class="fs-5 text">Ngày khởi chiếu: </label>
+                <div class="fs-4 text-dark text detail-info-right">
+                  [[${film.ngaychieu}]]
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--          noi dung phim-->
+        <div class="row-phim text">
+          <div class="mt-5 dang-sap-chieu text">
+            <h2 class="mb-0" style="font-size: 19px;" >Nội dung</h2>
+          </div>
+          <p th:text="${film.noidung}" >
+            Lấy cảm hứng từ những hồ sơ có thật của Cha Gabriele Amorth, Trưởng Trừ Tà của Vatican (Russell Crowe, đoạt giải Oscar), bộ phim "The Pope's Exorcist" theo chân Amorth trong cuộc điều tra về vụ quỷ ám kinh hoàng của một cậu bé và dần khám phá ra những bí mật hàng thế kỷ mà Vatican đã cố gắng giấu kín. Xem thêm tại: https://www.galaxycine.vn/dat-ve/the-popes-exorcist
+          </p>
+
+        </div>
+        <!--          lich chieu-->
+        <div class="row-phim">
+          <div class="mt-5 dang-sap-chieu text">
+            <h2 class="mb-0" style="font-size: 19px;" >Lịch chiếu</h2>
+          </div>
+
+          <div class="col-12 mb-8">
+            <div class="d-flex">
+              <select onchange="onchangeTinh(this)" th:field="*{tinh}" id="selecttinh" name="selecttinh" class="form-select mr-2" aria-label="Default select example">
+                <option value="-1" selected>Cả nước</option>
+                <option th:each="i : ${tinh}" value="" th:value="${i.id}" th:text="${i.tenTinhThanh}">
+                </option>
+              </select>
+              <input id="myDateInput" onchange="getDateValue(this)" class="form-control mr-2 " type = "date" name = "date">
+              <select onchange="onchangeRap(this)" id="selectrap" name="selectrap" th:field="*{rap}" class="form-select mr-2" aria-label="Default select example">
+                <option value="" selected>Tất cả rạp</option>
+                <option th:each="i : ${rap}" value="" th:value="${i.id}" th:text="${i.tenRap}">
+                </option>
+              </select>
+            </div>
+
+
+            <div class="col-12 margin-40" id="lichchieudetailfilm">
+
+
+              <div th:if="${sc.info == 'sắp chiếu'}" class=" detail-group-cinema ng-scope margin-40" th:each="sc : ${suatchieu}">
+                <div class="title-cinema">
+                  <h5 class="ng-binding">[[${sc.rap_suatchieu.tenRap}]]</h5>
+                </div>
+                <div  style="  " class="item-cinema" >
+                  <label style="   margin-right: 70px;"><b>Ngày Chiếu:</b> [[${sc.ngayChieu}]]</label>
+                  <label style="   margin-right: 70px;"><b>Phòng Chiếu:</b> [[${sc.phongChieu_suatchieu.tenPhong}]]</label>
+                  <label style="   margin-right: 70px;"><b>Giờ Chiếu:</b> [[${sc.thoiGian}]]</label>
+                  <label style=" color:red;  margin-right: 70px;">[[${sc.phim_suatChieu.loaiphim}]] - Phụ đề</label>
+                  <a th:href="@{/foodBill/{id}(id=${sc.id})}" class="mt-2 btn btn-success">mua vé</a>
+                </div>
+
+              </div>
+
+
+            </div>
+
+
+
+          </div>
+
+
+
+        </div>
+
+      </div>
+
+      <!--      THONG TIN PHU CUA PHIM PHIM-->
+      <div class="col-xl-4 col-md-6 ">
+        <!--       NHAN KHUYEN MAI-->
+        <div class="row">
+          <div class="mt-5 dang-sap-chieu text">
+            <h2 class="mb-0" style="font-size: 19px;" >Nhận khuyến mãi</h2>
+          </div>
+
+          <div class="box-promotion">
+              <form>
+                <input placeholder="Email" type="email" required ng-model="email"
+                class="login"
+                >
+                <button class="btn primary input">đăng ký</button>
+              </form>
+          </div>
+
+        </div>
+
+        <!--       phim dang chieu-->
+        <div class="row">
+          <div class="mt-5 dang-sap-chieu text">
+            <h2 class="mb-0" style="font-size: 19px;" >Phim Đang Chiếu</h2>
+          </div>
+
+          <div  class="row movies-group"   th:each="item : ${phimtemp}">
+              <div class="col-md-13 col-sm-12 col-xs-12 movie-item">
+                  <div class="article-movie-home">
+                      <img th:src="@{${item.anhphim}}" class="loading">
+                      <a>
+                        <div class="decription-hover overlay">
+                          <div class="movies-content">
+                            <i class="icon-c18"></i>
+                            <div class="group">
+                              <a th:href="@{/detailfilm/{id}(id=${item.id})}" class="btn btn-warning">mua vé</a>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+                  </div>
+                <div class="title-movie">
+                  <h4 class="upper-text">[[${item.tenphim}]]</h4>
+
+                </div>
+              </div>
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+
+    </div>
+  </div>
+
+
+  </div>
+
+<footer id="home-footer" th:replace="~{/fragments/app-fragments :: copyright}">
+
+</footer>
+
+
+
+
+</body>
+</html>

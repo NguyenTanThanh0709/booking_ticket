@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<!--  main-fragment (title, otherStaticResources, header, nav, mainContent, footer)  -->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout-admin :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #home-static-resources},
+                                                ~{:: #home-navbar},
+                                                ~{:: #home-sidebar},
+                                                ~{:: #home-main-content},
+                                                ~{:: #home-spinner}
+                                               )}">
+
+<head>
+    <title>Title of Home Page</title>
+    <th:block id="home-static-resources">
+
+    </th:block>
+</head>
+<body>
+
+<div id="home-spinner" th:replace="~{/fragments/app-fragments :: spinner}">
+</div>
+
+<div id="home-navbar" th:replace="~{/fragments/app-fragments :: navbar}">
+</div>
+
+<div id="home-sidebar" th:replace="~{/fragments/app-fragments :: sidebar}">
+</div>
+
+<div id="home-main-content">
+    <div class="row g-4">
+        <div class="col-sm-12 mt-2 col-xl-12">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">Xem chi tiết các rạp</h6>
+
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="col-12">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Thêm rạp
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content" style="width: 670px;">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="container-fluid pt-4 w-100 px-4">
+                                            <div class="row w-100 g-4">
+                                                <div class="col-sm-12 w-100 col-xl-6">
+                                                    <div class="bg-light rounded h-100 p-4">
+                                                        <h6 class="mb-4">Tên Rap</h6>
+
+                                                        <form id="formSubmitRapupdate">
+                                                            <div class="row mb-3">
+                                                                <label for="id" class="col-sm-2 col-form-label">Mã</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="hidden" class="form-control" value="" id="id" name="id">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="tenRap" class="col-sm-2 col-form-label">Tên Rạp</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" required class="form-control" id="tenRap" name="tenRap">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="imgRap" class="col-sm-2 col-form-label">Ảnh Rạp</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" required class="form-control" id="imgRap" name="imgRap">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="diaChi" class="col-sm-2 col-form-label">Địa chỉ Rạp</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" required class="form-control" id="diaChi" name="diaChi">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-3">
+                                                                <label for="trangthai" class="col-sm-2 col-form-label">Trạng thái Rạp</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" required class="form-control" id="trangthai" name="trangthai">
+                                                                </div>
+                                                            </div>
+
+                                                            <button type="submit" id="btnAddOrUpdateNewRapupdate" class="btn btn-primary">UP</button>
+                                                        </form>
+                                                        <select  th:field="*{tinh}" id="selecttinh_updateRap" name="selecttinh_updateRap" class="form-select mr-2" aria-label="Default select example">
+                                                            <option value="-1" selected>Tỉnh</option>
+                                                            <option th:each="i : ${tinh}" value="" th:value="${i.id}" th:text="${i.tenTinhThanh}">
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-light rounded h-100 p-4">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Mã Rạp</th>
+                                        <th scope="col">Ảnh Rạp</th>
+                                        <th scope="col">Tên Rạp</th>
+                                        <th scope="col">Địa chỉ</th>
+                                        <th scope="col">Thuộc Tỉnh</th>
+                                        <th scope="col">Trạng Thái</th>
+                                        <th scope="col">Sửa Thông tin</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <tr th:each="rap : ${listrap}">
+
+                                        <th scope="row">[[${rap.id}]]</th>
+                                        <td><img style="width: 54px;height: 50px;" th:src="@{${rap.imgRap}}"/></td>
+                                        <td>[[${rap.tenRap}]]</td>
+                                        <td>[[${rap.diaChi}]]</td>
+                                        <td>[[${rap.tinhThanh_rap.tenTinhThanh}]]</td>
+                                        <td>[[${rap.trangthai}]]</td>
+                                        <td><button th:onclick="'updateRap(' + ${rap.id} + ')'" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Sửa Rạp</button></td>
+
+                                    </tr>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    ...
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Understood</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+
+
+</script>
+
+</body>
+</html>

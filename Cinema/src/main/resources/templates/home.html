@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<!--  main-fragment (title, otherStaticResources, header, nav, mainContent, footer)  -->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #home-static-resources},
+                                                ~{:: #home-navmain},
+                                                ~{:: #home-navreponsive},
+                                                ~{:: #home-main-content},
+                                                ~{:: #home-footer}
+                                               )}">
+
+<head>
+    <title>Title of Home Page</title>
+    <th:block id="home-static-resources">
+
+
+        <link th:href="@{/css/style.css}" rel="stylesheet" />
+        <link th:href="@{/css/a.css}" rel="stylesheet" />
+        <link th:href="@{/css/slider.css}" rel="stylesheet" />
+    </th:block>
+</head>
+<body>
+
+<nav id="home-navmain" th:replace="~{/fragments/app-fragments :: nav-default}">
+
+</nav>
+
+<nav id="home-navreponsive" th:replace="~{/fragments/app-fragments :: nav-reponsive}">
+
+</nav>
+
+<div id="home-main-content" class="container">
+    <div th:style="'height: 10px'"></div>
+    <!--        Slide-->
+
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active" >
+                <img th:src="@{../assets/cinemabg2.jpg}" th:style="'border-radius: 20px !important'"  class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" >
+                <img th:src="@{../assets/banner.jpg}" th:style="'border-radius: 20px !important'"  class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" >
+                <img th:src="@{../assets/banner2.jpg}" th:style="'border-radius: 20px !important'"  class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+
+    <div class="dangchieu">
+        <div class="mt-5 dang-sap-chieu text">
+            <h2 class="mb-0">PHIM ĐANG CHIẾU</h2>
+        </div>
+        <div class="type-film d-flex justify-content-between">
+            <a
+                    type="button"
+                    class="btn button-type-film active"
+                    id="all-film"
+                    th:href="@{/home}"
+            >
+                Tất cả
+            </a>
+            <button
+                    type="button"
+                    class="btn button-type-film"
+                    id="2d-film"
+                    onclick="searchfilm(1)"
+            >
+                2D
+            </button>
+            <button
+                    type="button"
+                    class="btn button-type-film"
+                    id="3d-film"
+                    onclick="searchfilm(2)"
+            >
+                3D
+            </button>
+        </div>
+
+
+
+
+        <div class="row-phim" id="home_listphim">
+
+
+            <div th:each="movie : ${movieList_dangchieu}" class="card">
+                <div class="poster position-relative">
+                    <img th:src="@{${movie.anhphim}}" alt="poster" />
+                        <div class="overlay position-absolute ">
+                            <a th:href="@{/detailfilm/{id}(id=${movie.id})}" class="btn hrefmuafilm bg-warning secondary-white ">
+                                mua vé
+                            </a>
+                        </div>
+                    </a>                </div>
+                <div class="detail">
+                    <h2 class="name-film" th:text="${movie.tenphim}">
+
+                    </h2>
+                    <h3 class="director">Đạo diễn <span th:text="${movie.daodien}" ></span></h3>
+
+                    <div
+                            class="tags d-flex justify-content-center p-2"
+                    >
+                        <span class="c16">C16</span>
+                        <span
+                                class="film-2d d-flex align-items-center justify-content-center"
+                        >[[${movie.loaiphim}]]</span
+                        >
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row-phim d-flex align-items-center justify-content-center ">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" th:href="@{'/home?start=' + ${bd1} +  '&action=pre'}">Previous</a></li>
+                    <li class="page-item"><a class="page-link" th:href="@{'/home?start=' + ${bd} +  '&action=next'}">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div class="sapchieu">
+        <div class="mt-5 dang-sap-chieu text">
+            <h2 class="mb-0">PHIM SẮP CHIẾU</h2>
+        </div>
+        <div class="slider-wrapper overflow-hidden">
+            <div class="slider-buttons text-end">
+                <button class="pre slider-button" id="pre-btn-slider"><i class="fa-solid fa-angle-left"></i></button>
+                <button class="next slider-button" id="next-btn-slider"><i class="fa-solid fa-angle-right"></i></button>
+            </div>
+            <div class="slider">
+                <div th:each="movie : ${movieList_sapchieu}" class="card">
+                    <div class="poster">
+                        <img th:src="@{${movie.anhphim}}" alt="poster" />
+                    </div>
+                    <div class="detail">
+                        <h2 class="name-film" th:text="${movie.tenphim}">
+
+                        </h2>
+                        <h3 class="director">Đạo diễn <span th:text="${movie.daodien}" ></span></h3>
+
+                        <div
+                                class="tags d-flex justify-content-center p-2"
+                        >
+                            <span class="c16">C16</span>
+                            <span
+                                    class="film-2d d-flex align-items-center justify-content-center"
+                            >[[${movie.loaiphim}]]</span
+                            >
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div >
+    </div>
+
+
+    <div class="uudai" id="uudaihotro">
+        <div class="mt-5 dang-sap-chieu text">
+            <h2 class="mb-0">ƯU ĐÃI</h2>
+        </div>
+        <div class="row-phim">
+            <div th:if="${km.trangthai == 'bắt đầu'}" class="card" th:each="km : ${khuyenmai}">
+                <div class="poster">
+                    <img th:src="@{${km.img}}" alt="poster" />
+                </div>
+                <div class="detail">
+                    <h2 class="name-film">
+                        [[${km.tenkhuyenmai}]]
+                    </h2>
+                    <h3 class="director">Tiền Khuyến mãi: [[${km.tienkhuyenmai}]]</h3>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<footer id="home-footer" th:replace="~{/fragments/app-fragments :: copyright}">
+
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
