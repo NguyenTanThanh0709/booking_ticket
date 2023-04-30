@@ -2,6 +2,7 @@ package com.tdtu.Cinema.Service.impl;
 
 import com.tdtu.Cinema.DTO.RoleDTO;
 import com.tdtu.Cinema.DTO.UserDTO;
+import com.tdtu.Cinema.Entity.RoleName;
 import com.tdtu.Cinema.Entity.RolesEntity;
 import com.tdtu.Cinema.Entity.UserEnity;
 import com.tdtu.Cinema.Mapper.RoleMapper;
@@ -62,7 +63,7 @@ public class UserService implements IUserService {
             userEntity.setListThanhToan(usertemp.getListThanhToan());
             //userEntity.setListVe(usertemp.getListVe());
         }else{
-            RolesEntity role = roleRepository.findByRoleName("USER").get();
+            RolesEntity role = roleRepository.findByName(RoleName.USER).get();
             Set<RolesEntity> listrole = new HashSet<>();
             listrole.add(role);
             userEntity.setLikeRoles(listrole);
@@ -73,6 +74,21 @@ public class UserService implements IUserService {
     @Override
     public UserDTO login(String email, String pass) {
         return UserMapper.toDTO(userRepository.findByEmailAndPass(email,pass).get(0));
+    }
+
+    @Override
+    public Optional<UserEnity> findBySdt(String sdt) {
+        return userRepository.findBySdt(sdt);
+    }
+
+    @Override
+    public Boolean existsBySdt(String sdt) {
+        return userRepository.existsBySdt(sdt) ;
+    }
+
+    @Override
+    public List<UserEnity> findBySdtAndPass(String sdt, String pass) {
+        return userRepository.findBySdtAndPass(sdt,pass);
     }
 
 }

@@ -12,4 +12,8 @@ public interface UserRepository extends JpaRepository<UserEnity, Long> {
     Optional<UserEnity> findByEmail(String email);
     Boolean existsByEmail(String email);
     List<UserEnity> findByEmailAndPass(String email, String pass);
+
+    Optional<UserEnity> findBySdt(String sdt);
+    Boolean existsBySdt(String sdt);
+    List<UserEnity> findBySdtAndPass(String sdt, String pass);
 }

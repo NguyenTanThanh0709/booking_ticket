@@ -285,4 +285,160 @@ $.ajax({
 
 }
 
+function handelfill(){
+        $("#id").val("");
+        $("#tenphim").val("");
+        $("#tuoi").val("");
+        $("#theloai").val("");
+        $("#quocgia").val("");
+        $("#dienvien").val("");
+                $("#daodien").val("");
+                $("#ngaychieu").val("");
+                $("#rating").val("");
+                $("#thoiluong").val("");
+                $("#loaiphim").val("");
+                                $("#noidung").val("");
+                                $("#trangthai").val("");
+                                $("#anhphim").val("");
+                                $("#trailer").val("");
+}
 
+
+function searchByName_admin(thiss) {
+
+				var txt = thiss.value;
+                console.log(txt);
+				$.ajax({
+					url : '/api/user/search?ten=' + txt,
+					type : "get", //send it through get method
+					dataType : 'json',
+					success : function(result) {
+                console.log(result);
+            	var container = document.getElementById("listphimadmin");
+            	container.innerHTML ="";
+                result.forEach((phim) => {
+                    var movieCard = document.createElement("tr");
+
+                     movieCard.innerHTML = `
+                                        <td><img style="width: 54px;height: 50px;" src="${phim.anhphim}"/></td>
+                                        <td>${phim.tenphim}</td>
+                                        <td>${phim.theloai}</td>
+                                        <td>${phim.quocgia}</td>
+                                        <td><button onclick="handlephimdetails(${phim.id})" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#quanliphim">Xem chi tiết</button></td>
+
+                     `;
+                container.appendChild(movieCard);
+              	});
+
+					},
+					error : function(xhr) {
+						//Do Something to handle error
+					}
+				});
+			}
+
+
+$('#formquanlyphim_submit').click(function (e) {
+    e.preventDefault();
+
+    var data = {};
+    var formData = $('#formquanlyphim').serializeArray();
+    $.each(formData, function (i, v) {
+        data[""+v.name+""] = v.value;
+    });
+    //console.log(data);
+    var filename = $('#avatar').val().replace(/.*(\/|\\)/, '');
+
+    if(filename != ""){
+        data["anhphim"] = "../assets/" + filename;
+        uploadFile();
+    }
+
+
+    console.log(data);
+    if(data["id"] == ""){
+            addNew_(data);
+    }else{
+            updateNew(data, data["id"]);
+    }
+
+});
+
+async function uploadFile() {
+  let formData = new FormData();
+  formData.append("file", avatar.files[0]);
+  let response = await fetch('/api/admin/upload-file', {
+    method: "POST",
+    body: formData
+  });
+
+  if (response.status == 200) {
+    alert("File successfully uploaded.");
+  }
+}
+
+function addNew_(data) {
+	$.ajax({
+        url: '/api/admin/film',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        success: function (result) {
+        	alert("success");
+        	window.location.href = "/qlphim";
+        },
+        error: function (error) {
+
+        }
+    });
+}
+function updateNew(data, id) {
+	$.ajax({
+        url: '/api/admin/film/' + id,
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        success: function (result) {
+        alert("success");
+        	window.location.href = "/qlphim";
+
+        },
+        error: function (error) {
+
+        }
+    });
+}
+
+
+
+function handlephimdetails(idPhim){
+
+				$.ajax({
+					url : '/api/user/getone/' + idPhim,
+					type : "get", //send it through get method
+					dataType : 'json',
+					success : function(result) {
+                    console.log(result);
+        $("#id").val(result.id);
+        $("#tenphim").val(result.tenphim);
+        $("#tuoi").val(result.tuoi);
+        $("#theloai").val(result.theloai);
+        $("#quocgia").val(result.quocgia);
+        $("#dienvien").val(result.dienvien);
+                $("#daodien").val(result.daodien);
+                $("#ngaychieu").val(result.ngaychieu);
+                $("#rating").val(result.rating);
+                $("#thoiluong").val(result.thoiluong);
+                $("#loaiphim").val(result.loaiphim);
+                                $("#noidung").val(result.noidung);
+                                $("#trangthai").val(result.trangthai);
+                                $("#anhphim").val(result.anhphim);
+                                $("#trailer").val(result.trailer);
+					},
+					error : function(xhr) {
+						//Do Something to handle error
+					}
+				});
+}

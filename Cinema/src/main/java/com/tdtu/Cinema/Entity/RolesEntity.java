@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import java.util.*;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.NaturalId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +23,11 @@ public class RolesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "role_name")
-    private String roleName;
+
+    @Enumerated(EnumType.STRING)
+    @NaturalId
+    @Column(length = 60)
+    private  RoleName name;
 
     @ManyToMany(mappedBy = "likeRoles")
     @JsonManagedReference

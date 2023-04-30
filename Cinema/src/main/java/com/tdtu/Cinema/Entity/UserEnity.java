@@ -53,9 +53,7 @@ public class UserEnity  {
 
     private Set<RolesEntity> likeRoles = new HashSet<>();
 
-//    @OneToMany(mappedBy = "user_ve")
-//    @JsonManagedReference
-//    private List<VeEntity> listVe = new ArrayList<>();
+
 
     @OneToMany(mappedBy = "user_thanhtoan")
     @JsonManagedReference

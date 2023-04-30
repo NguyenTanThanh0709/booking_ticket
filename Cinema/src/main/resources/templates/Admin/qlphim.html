@@ -35,14 +35,136 @@
 
             <div class="bg-light rounded h-100 p-4">
                 <form class="d-none m-4 d-md-flex ms-4">
-                    <input class="form-control border-0" type="search" placeholder="Search">
+                    <input oninput="searchByName_admin(this)" class="form-control border-0" type="search" placeholder="Search">
                 </form>
                 <h6 class="mb-4">Xem chi tiết danh sách phim</h6>
 
 
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                     <div class="col-12">
-                        <button class="btn btn-primary">Thêm Phim</button>
+                        <button class="btn btn-primary" onclick="handelfill()" data-bs-toggle="modal" data-bs-target="#quanliphim">Thêm Phim</button>
+                        <div class="modal fade" id="quanliphim" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content" style="width: 670px;">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="quanliphim_">Modal title</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="container-fluid pt-4 w-100 px-4">
+                                            <div class="row w-100 g-4">
+                                                <div class="col-sm-12 w-100 col-xl-6">
+                                                    <div class="bg-light rounded h-100 p-4" id="container_info_phim">
+
+                                                        <form id="formquanlyphim">
+                                                            <div class="row mb-3">
+                                                                <label for="id" class="col-sm-2 col-form-label">Mã</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="hidden" class="form-control" value="" id="id" name="id">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="tenphim" class="col-sm-2 col-form-label">Tên Phim</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" required class="form-control" id="tenphim" name="tenphim">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="tuoi" class="col-sm-2 col-form-label">Tuổi</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="number" required class="form-control" id="tuoi" name="tuoi">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="theloai" class="col-sm-2 col-form-label">Thể loại</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" required class="form-control" id="theloai" name="theloai">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="quocgia" class="col-sm-2 col-form-label">Quốc gia</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" required class="form-control" id="quocgia" name="quocgia">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="dienvien" class="col-sm-2 col-form-label">Diễn Viên</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" required class="form-control" id="dienvien" name="dienvien">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="daodien" class="col-sm-2 col-form-label">Đạo diễn</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" required class="form-control" id="daodien" name="daodien">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="ngaychieu" class="col-sm-2 col-form-label">Ngày Chiếu</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" required class="form-control" id="ngaychieu" name="ngaychieu">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="rating" class="col-sm-2 col-form-label">Rating</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="number" required class="form-control" id="rating" name="rating">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="thoiluong" class="col-sm-2 col-form-label">Thời Lượng</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="number" required class="form-control" id="thoiluong" name="thoiluong">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="loaiphim" class="col-sm-2 col-form-label">Loại Phim</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" placeholder="2D 3D" required class="form-control" id="loaiphim" name="loaiphim">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="noidung" class="col-sm-2 col-form-label">Nội Dung</label>
+                                                                <div class="col-sm-10">
+                                                                    <textarea   required class="form-control" id="noidung"  name="noidung"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="trangthai" class="col-sm-2 col-form-label">Trạng thái</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" placeholder="đang chiếu || sắp chiếu || ngưng chiếu" required class="form-control" id="trangthai" name="trangthai">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="anhphim" class="col-sm-2 col-form-label">Ảnh phim</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" placeholder="url" required class="form-control" id="anhphim" name="anhphim">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-3">
+                                                                <label for="avatar" class="form-label">Chọn Ảnh Phim</label>
+                                                                <input name="avatar"  class="form-control" type="file" id="avatar" >
+                                                            </div>
+
+                                                            <div class="row mb-3">
+                                                                <label for="trailer" class="col-sm-2 col-form-label">Trailer</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" required class="form-control" id="trailer" name="trailer">
+                                                                </div>
+                                                            </div>
+                                                            <button type="submit" id="formquanlyphim_submit" class="btn btn-primary">UP</button>
+                                                        </form>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                         <div class="bg-light rounded h-100 p-4">
                             <div class="table-responsive">
                                 <table class="table table-hover">
@@ -55,14 +177,14 @@
                                         <th scope="col">Xem chi tiết</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="listphimadmin">
 
-                                    <tr>
-                                        <td>John</td>
-                                        <td>Doe</td>
-                                        <td>jhon@email.com</td>
-                                        <td>USA</td>
-                                        <td><button class="btn btn-primary">Xem chi tiết</button></td>
+                                    <tr th:each="phim : ${phims}">
+                                        <td><img style="width: 54px;height: 50px;" th:src="@{${phim.anhphim}}"/></td>
+                                        <td>[[${phim.tenphim}]]</td>
+                                        <td>[[${phim.theloai}]]</td>
+                                        <td>[[${phim.quocgia}]]</td>
+                                        <td><button th:onclick="'handlephimdetails(' + ${phim.id} + ')'" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#quanliphim">Xem chi tiết</button></td>
 
 
                                     </tr>

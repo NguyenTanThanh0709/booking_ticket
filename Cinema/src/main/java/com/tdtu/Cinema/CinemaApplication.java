@@ -2,6 +2,8 @@ package com.tdtu.Cinema;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -9,7 +11,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CinemaApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(CinemaApplication.class, args);
+	}
+
+	@Bean
+	public static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
+		return new PropertySourcesPlaceholderConfigurer();
 	}
 
 }

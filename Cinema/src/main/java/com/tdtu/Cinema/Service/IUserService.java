@@ -14,5 +14,9 @@ public interface IUserService {
     UserDTO save(UserDTO user);
     UserDTO login(String email, String pass);
 
+    Optional<UserEnity> findBySdt(String sdt);
+    Boolean existsBySdt(String sdt);
+    List<UserEnity> findBySdtAndPass(String sdt, String pass);
+
 
 }
