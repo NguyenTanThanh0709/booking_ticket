@@ -2,6 +2,7 @@ package com.tdtu.Cinema.Controller.User;
 
 import com.tdtu.Cinema.Entity.*;
 import com.tdtu.Cinema.Service.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -79,7 +80,8 @@ public class UserController {
     }
 
     @GetMapping("/muave")
-    public  String muave(Model model){
+    public  String muave(Model model,  HttpSession session){
+
         List<PhimEntity> listphim = new ArrayList<>();
         listphim = phimService.findByTrangthai("đang chiếu");
         model.addAttribute("phim",listphim);

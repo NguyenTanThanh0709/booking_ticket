@@ -2,8 +2,8 @@ package com.tdtu.Cinema.API;
 
 
 import com.tdtu.Cinema.DTO.UserDTO;
-import com.tdtu.Cinema.Entity.UserEnity;
 import com.tdtu.Cinema.Service.IUserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,13 +15,27 @@ public class MainAPI {
 
     @Autowired
     private IUserService userService;
+
+
     @PostMapping("/signup")
     public UserDTO signUp(@RequestBody UserDTO user){
-        if(userService.existsByEmail(user.getEmail())){
+        if(userService.existsBySdt(user.getSdt())){
             return null;
         }
         return userService.save(user);
     }
+
+    @PostMapping("/signin_")
+    public UserDTO signIn(@RequestBody UserDTO user, HttpSession session){
+        if(userService.existsBySdt(user.getSdt())){
+            session.setAttribute("user",userService.findBySdt(user.getSdt()));
+            return user;
+        }
+        return null;
+    }
+
+
+
 
 
     @PutMapping("signup/{id}")

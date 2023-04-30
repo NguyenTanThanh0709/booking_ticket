@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/adminHome")
 public class home {
 
     @Autowired

@@ -15,12 +15,18 @@
     <div class="bg order-1 order-md-2" style="background-image: url('images/bg_1.jpg');"></div>
     <div class="contents order-2 order-md-1">
 
+
+
         <div class="container">
             <div class="row align-items-center justify-content-center">
                 <div class="col-md-7">
                     <h3>Login to <strong>GALAXY</strong></h3>
+                    <div class="fs-1 text-danger" th:if="${error != null}" th:text="${error}">
+                    </div>
+                    <div class="fs-1 text-danger" th:if="${message != null}" th:text="${message}">
+                    </div>
                     <p class="mb-4">Galaxy Cinema còn hấp dẫn khán giả bởi không khí thân thiện cũng như chất lượng dịch vụ hàng đầu.</p>
-                    <form th:action="@{/j_spring_security_check}" method="post">
+                    <form method="post" id="formlogin">
                         <div class="form-group first">
                             <label for="sdt">Số Điện Thoại</label>
                             <input type="text" class="form-control" placeholder="your-phone" name="sdt" id="sdt">
@@ -38,7 +44,7 @@
                             <span class="ml-auto"><a th:href="@{/register}" class="forgot-pass">Register Account</a></span>
                         </div>
 
-                        <input type="submit" value="Log In" class="btn btn-block btn-primary">
+                        <input type="submit" id="loginbutton" value="Log In" class="btn btn-block btn-primary">
 
                     </form>
                 </div>

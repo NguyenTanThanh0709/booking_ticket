@@ -15,9 +15,4 @@ public class CinemaApplication {
 		SpringApplication.run(CinemaApplication.class, args);
 	}
 
-	@Bean
-	public static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
-		return new PropertySourcesPlaceholderConfigurer();
-	}
-
 }

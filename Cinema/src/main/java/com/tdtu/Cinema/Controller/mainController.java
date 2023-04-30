@@ -5,6 +5,8 @@ import com.tdtu.Cinema.Entity.PhimEntity;
 import com.tdtu.Cinema.Mapper.PhimMapper;
 import com.tdtu.Cinema.Service.IKhuyenMaiService;
 import com.tdtu.Cinema.Service.IPhimService;
+import com.tdtu.Cinema.Service.IUserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +26,12 @@ public class mainController {
     @Autowired
     private IPhimService phimService;
 
+    @Autowired
+    private IUserService userService;
+
     @GetMapping({"/home", "/"})
-    public String home(Model model,@RequestParam(defaultValue = "0") String start,
-                       @RequestParam(defaultValue = "10") String end, @RequestParam(defaultValue = "none") String action) {
+    public String home(Model model,@RequestParam(defaultValue = "0") String start,@RequestParam(value = "success",required = false) String success,
+                       @RequestParam(defaultValue = "10") String end, @RequestParam(defaultValue = "none") String action ,  HttpSession session)  throws IOException {
 
 
 
@@ -95,7 +101,15 @@ public class mainController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model, @RequestParam(value = "error",required = false) String error,
+                        @RequestParam(value = "logout",	required = false) String logout) {
+        if (error != null) {
+            model.addAttribute("error", "Invalid Credentials provided.");
+        }
+
+        if (logout != null) {
+            model.addAttribute("message", "Logged out from JournalDEV successfully.");
+        }
         return "Login";
     }
 
