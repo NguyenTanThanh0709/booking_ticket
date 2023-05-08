@@ -45,6 +45,9 @@ public class UserController {
     @Autowired
     private IDanhGiaPhimService danhGiaPhimService;
 
+    @Autowired
+    private IKhuyenMaiService khuyenMaiService;
+
 
 
     @GetMapping("/detailfilm/{id}")
@@ -73,7 +76,18 @@ public class UserController {
         List<FoodEntity> listfood = foodService.getall();
         List<VeEntity> listVe = veService.getall();
         SuatChieuEntity suatchieu = suatChieuService.getByid(id);
+
+        List<KhuyenMaiEntity> listkms = khuyenMaiService.getall();
+
+        for (KhuyenMaiEntity km:
+             listkms) {
+            if(km.getTrangthai().equals("kết thúc")){
+                listkms.remove(km);
+            }
+        }
+
         model.addAttribute("food", listfood);
+        model.addAttribute("khuyenmai", listkms);
         model.addAttribute("ve", listVe);
         model.addAttribute("suatchieu", suatchieu);
         return "/User/foorForFilm";

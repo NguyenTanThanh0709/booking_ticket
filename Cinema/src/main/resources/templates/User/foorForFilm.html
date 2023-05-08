@@ -213,11 +213,10 @@
                             <label  class="col-sm-2 col-form-label">Hình thức thanh toán</label>
                             <div class="col-sm-10">
                                 <select id="pttt" name="pttt" class="form-select" aria-label="Default select example">
-                                    <option selected>Chọn phương thức thanh toán</option>
                                     <option value="1">MoMo</option>
                                     <option value="2">Zalo Pay</option>
                                     <option value="3">VN Pay</option>
-                                    <option value="3">Shoppe Pay</option>
+                                    <option value="4">Shoppe Pay</option>
                                 </select>
                             </div>
                         </div>
@@ -241,14 +240,16 @@
                         </div>
                         <div class="mb-1 row">
                             <label for="magiamgia" class="col-sm-2 col-form-label">Mã giảm giá</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="magiamgia">
-                            </div>
+                            <select id="magiamgia" name="magiamgia" class="mb-2 form-select form-select-sm" aria-label=".form-select-sm example">
+                                <option value ="0" selected>Chọn khuyến mãi</option>
+                                <option th:if="${i.trangthai == 'bắt đầu'}" th:each="i : ${khuyenmai}" th:value="${i.tienkhuyenmai}" th:text="${i.tenkhuyenmai}">
+                                </option>
+                            </select>
                         </div>
 
                         <div class="mb-1 row">
                             <button id="clickquaylaithanhtoan" style="width:150px; margin: 23px;"  type="button" class="btn mr-5 btn-success">Quay Lại</button>
-                            <button style="width:150px; margin: 23px;"  type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Thanh Toán</button>
+                            <button style="width:150px; margin: 23px;" id="clicktothanhtoan"  type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Thanh Toán</button>
                             <!-- Modal -->
                             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">

@@ -72,6 +72,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public UserEnity save(UserEnity user) {
+        return userRepository.save(user);
+    }
+
+    @Override
     public UserDTO login(String email, String pass) {
         return UserMapper.toDTO(userRepository.findByEmailAndPass(email,pass).get(0));
     }

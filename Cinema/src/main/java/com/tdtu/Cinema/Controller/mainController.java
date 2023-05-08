@@ -9,6 +9,8 @@ import com.tdtu.Cinema.Service.IUserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +35,21 @@ public class mainController {
     public String home(Model model,@RequestParam(defaultValue = "0") String start,@RequestParam(value = "success",required = false) String success,
                        @RequestParam(defaultValue = "10") String end, @RequestParam(defaultValue = "none") String action ,  HttpSession session)  throws IOException {
 
+        if(success != null){
+            Authentication auth =
+                    SecurityContextHolder.getContext().getAuthentication();
+
+            String user = "";
+            if(auth == null || !auth.isAuthenticated()) {
+            } else {
+                user = auth.getName();
+            }
+
+            if(!user.isEmpty() || !user.equalsIgnoreCase("")) {
+                session.setAttribute("user","ok");
+            }
+
+        }
 
 
         List<PhimEntity> list = phimService.findAll();

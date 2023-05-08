@@ -24,7 +24,8 @@ public class JwtProvider {
                 .setSubject(userPrinciple.getUsername())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS256, jwtsecret)
+
+                .signWith(SignatureAlgorithm.HS512, jwtsecret)
                 .compact();
     }
 
@@ -44,6 +45,17 @@ public class JwtProvider {
             logger.error("invalid claims " + e);
         }
         return false;
+    }
+
+    public String getSubject(String token) {
+        return parseClaims(token).getSubject();
+    }
+
+    private Claims parseClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(jwtsecret)
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     public String getUserNameFromtoken(String token){

@@ -12,9 +12,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
 
 public class JwtTokenFilter  extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
@@ -50,5 +52,8 @@ public class JwtTokenFilter  extends OncePerRequestFilter {
         }else {
             return  null;
         }
+//        String header = request.getHeader("Authorization");
+//        String token = header.split(" ")[1].trim();
+//        return token;
     }
 }

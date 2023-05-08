@@ -997,6 +997,11 @@ $.ajax({
 }
 
 
+$('#magiamgia').on('change', function() {
+  var tongtien = $('#thhanhtoan_tongtien').text();
+  $('#thhanhtoan_tongtien').text(tongtien - this.value);
+});
+
 
 $('#btnAddOrUpdateNewRapupdate').click(function (e) {
     e.preventDefault();

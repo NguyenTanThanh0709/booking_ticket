@@ -41,17 +41,17 @@ public class UserPrinciple implements UserDetails {
 
         @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+        return this.roles;
     }
 
     @Override
     public String getPassword() {
-        return pass;
+        return this.pass;
     }
 
     @Override
     public String getUsername() {
-        return sdt;
+        return this.sdt;
     }
 
     @Override

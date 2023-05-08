@@ -33,10 +33,20 @@ function addNew__(data) {
         data: JSON.stringify(data),
         dataType: 'json',
         success: function (result) {
-        	window.location.href = "/login";
+                console.log(result);
+
+                if(result.massage == "Exits Phone Number!"){
+                    alert("Error! check SDT");
+                    return;
+                }else {
+                     alert("Create Acc Success!");
+                     window.location.href = "/login";
+                }
+
         },
         error: function (error) {
-
+                alert("Error !!!");
+                console.log(error);
         }
     });
 }
@@ -62,10 +72,12 @@ function addNew___(data) {
         data: JSON.stringify(data),
         dataType: 'json',
         success: function (result) {
-        	window.location.href = "/home";
+            console.log(result);
+            window.location.href = "/home";
         },
         error: function (error) {
-            alert("eror");
+        console.log(error);
+            //alert("eror");
         }
     });
 }

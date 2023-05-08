@@ -23,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -37,12 +38,18 @@ public class ApplicationSecurityConfig   {
 
     @Bean
     public JwtTokenFilter jwtAuthenticationFilter(){
-        return  new JwtTokenFilter();
+        return new JwtTokenFilter();
     }
 
     @Bean
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
 
@@ -51,38 +58,51 @@ public class ApplicationSecurityConfig   {
         http
                 .csrf().disable()
                 .exceptionHandling()
-                .authenticationEntryPoint(jwtEntryPoint)
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests((authorize) -> authorize
-                        .requestMatchers( "/"  ).permitAll()
-                        .requestMatchers("/register").permitAll()
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/home").permitAll()
-                        .requestMatchers("/api/user/**").authenticated()
-                        .requestMatchers("/detailfilm/**").hasRole(RoleName.USER.toString())
-                        .requestMatchers("/foodBill/**").hasRole(RoleName.USER.toString())
-                        .requestMatchers("/muave").hasRole(RoleName.USER.toString())
-                        .requestMatchers("/comments/**").hasRole(RoleName.USER.toString())
-                        .requestMatchers("/inforuser").hasRole(RoleName.USER.toString())
+                .authenticationEntryPoint(jwtEntryPoint);
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.authorizeRequests()
+                .requestMatchers(
+                        new AntPathRequestMatcher("/api/auth/**"),
+                        new AntPathRequestMatcher("/"),
+                        new AntPathRequestMatcher("/home"),
+                        new AntPathRequestMatcher("/login"),
+                        new AntPathRequestMatcher("/register"),
+                        new AntPathRequestMatcher("/detailfilm/**")
+                ).permitAll();
 
 
-                        .requestMatchers("/adminHome").hasRole(RoleName.ADMIN.toString())
-                        .requestMatchers("/api/admin/**").hasRole(RoleName.ADMIN.toString())
-                        .anyRequest()
-                        .authenticated()
-                );
 
-        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403page");
+        http.authorizeRequests().requestMatchers(
+                new AntPathRequestMatcher("/api/admin/**"),
+                new AntPathRequestMatcher("/adminHome"),
+                new AntPathRequestMatcher("/qldanhgiaphim"),
+                new AntPathRequestMatcher("/qlfood"),
+                new AntPathRequestMatcher("/qlkhuyenmai"),
+                new AntPathRequestMatcher("/qlphim"),
+                new AntPathRequestMatcher("/qlrap"),
+                new AntPathRequestMatcher("/qlsuatchieu"),
+                new AntPathRequestMatcher("/qlve")
+        ).hasRole("ADMIN")
+                .anyRequest()
+                .authenticated();
 
-        http.authorizeRequests().and().formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/home?success")
-                .failureUrl("/login?error")
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout");
+        http.authorizeRequests().and().formLogin(
+                form -> form
+                        .loginPage("/login")
+                       // .loginProcessingUrl("/process_login")
+                        .defaultSuccessUrl("/home?success")
+                        .failureUrl("/login?error")
+                        .usernameParameter("sdt")
+                        .passwordParameter("pass")
+                        .permitAll()
+        ).logout(
+                logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+        );
+
+
 
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -95,11 +115,7 @@ public class ApplicationSecurityConfig   {
     }
 
 
-    @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
