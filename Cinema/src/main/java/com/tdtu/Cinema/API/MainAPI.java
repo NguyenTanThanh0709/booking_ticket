@@ -74,13 +74,9 @@ public class MainAPI {
     public ResponseEntity<?> signIn(@Valid @RequestBody UserDTO user, HttpSession session){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getSdt(), user.getPass()));
-
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
-
         String token = jwtProvider.createToken(authentication);
-        //String token = "null";
         return  ResponseEntity.ok(new JwtReponse(token,userPrinciple.getUsername(), userPrinciple.getAuthorities()));
     }
 

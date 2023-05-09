@@ -6,6 +6,7 @@ import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -62,4 +63,6 @@ public class JwtProvider {
         String username = Jwts.parser().setSigningKey(jwtsecret).parseClaimsJwt(token).getBody().getSubject();
         return username;
     }
+
+
 }

@@ -6,6 +6,8 @@ import com.tdtu.Cinema.Mapper.PhimMapper;
 import com.tdtu.Cinema.Service.IKhuyenMaiService;
 import com.tdtu.Cinema.Service.IPhimService;
 import com.tdtu.Cinema.Service.IUserService;
+import com.tdtu.Cinema.Service.SecurityService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,28 +31,35 @@ public class mainController {
     private IPhimService phimService;
 
     @Autowired
+    private SecurityService securityService;
+
+    @Autowired
     private IUserService userService;
 
     @GetMapping({"/home", "/"})
     public String home(Model model,@RequestParam(defaultValue = "0") String start,@RequestParam(value = "success",required = false) String success,
                        @RequestParam(defaultValue = "10") String end, @RequestParam(defaultValue = "none") String action ,  HttpSession session)  throws IOException {
 
-        if(success != null){
-            Authentication auth =
-                    SecurityContextHolder.getContext().getAuthentication();
+//        if(success != null){
+//            Authentication auth =
+//                    SecurityContextHolder.getContext().getAuthentication();
+//
+//            String user = "";
+//            if(auth == null || !auth.isAuthenticated()) {
+//            } else {
+//                user = auth.getName();
+//            }
+//
+//            if(!user.isEmpty() || !user.equalsIgnoreCase("")) {
+//                session.setAttribute("user","ok");
+//            }
+//
+//        }
 
-            String user = "";
-            if(auth == null || !auth.isAuthenticated()) {
-            } else {
-                user = auth.getName();
-            }
 
-            if(!user.isEmpty() || !user.equalsIgnoreCase("")) {
-                session.setAttribute("user","ok");
-            }
-
+        if (securityService.isAuthenticated()) {
+            return "redirect:/";
         }
-
 
         List<PhimEntity> list = phimService.findAll();
         List<PhimDTO> listMain = new ArrayList<>();
@@ -130,6 +139,12 @@ public class mainController {
         return "Login";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        request.getSession().invalidate();
+        SecurityContextHolder.clearContext();
+        return "redirect:/login?logout";
+    }
     @GetMapping("/register")
     public String register() {
         return "Register";

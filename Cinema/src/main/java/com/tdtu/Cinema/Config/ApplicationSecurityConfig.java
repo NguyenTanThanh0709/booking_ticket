@@ -2,6 +2,7 @@ package com.tdtu.Cinema.Config;
 
 
 import com.tdtu.Cinema.Entity.RoleName;
+import com.tdtu.Cinema.Security.jwt.JwtAuthorizationFilter;
 import com.tdtu.Cinema.Security.jwt.JwtEntryPoint;
 import com.tdtu.Cinema.Security.jwt.JwtTokenFilter;
 import com.tdtu.Cinema.Security.userprincal.UserDetailService;
@@ -27,7 +28,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig   {
 
     @Autowired
@@ -36,9 +36,17 @@ public class ApplicationSecurityConfig   {
     @Autowired
     private JwtEntryPoint jwtEntryPoint;
 
+    @Autowired
+    LoginHandler successHandler;
+
     @Bean
     public JwtTokenFilter jwtAuthenticationFilter(){
         return new JwtTokenFilter();
+    }
+
+    @Bean
+    public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
+        return new JwtAuthorizationFilter();
     }
 
     @Bean
@@ -67,6 +75,7 @@ public class ApplicationSecurityConfig   {
                         new AntPathRequestMatcher("/home"),
                         new AntPathRequestMatcher("/login"),
                         new AntPathRequestMatcher("/register"),
+                        new AntPathRequestMatcher("/api/user/**"),
                         new AntPathRequestMatcher("/detailfilm/**")
                 ).permitAll();
 
@@ -86,26 +95,29 @@ public class ApplicationSecurityConfig   {
                 .anyRequest()
                 .authenticated();
 
+
+        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403page");
         http.authorizeRequests().and().formLogin(
                 form -> form
                         .loginPage("/login")
-                       // .loginProcessingUrl("/process_login")
+//                        .loginProcessingUrl("/j_spring_security_check")
+//                        .usernameParameter("sdt")
+//                        .passwordParameter("pass")
                         .defaultSuccessUrl("/home?success")
+                        .successHandler(successHandler)
                         .failureUrl("/login?error")
-                        .usernameParameter("sdt")
-                        .passwordParameter("pass")
                         .permitAll()
         ).logout(
                 logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
                         .permitAll()
         );
 
-
-
-
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthorizationFilter(),UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -113,8 +125,6 @@ public class ApplicationSecurityConfig   {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
     }
-
-
 
 
     @Bean
@@ -129,9 +139,5 @@ public class ApplicationSecurityConfig   {
                 "/scss/**",
                 "/fonts/**");
     }
-
-
-
-
 
 }

@@ -7,12 +7,14 @@ import com.tdtu.Cinema.Entity.PhimEntity;
 import com.tdtu.Cinema.Service.IDanhGiaPhimService;
 import com.tdtu.Cinema.Service.IPhimService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
+
 public class DanhGiaPhimADMIN {
 
     @Autowired

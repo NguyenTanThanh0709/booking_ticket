@@ -255,6 +255,8 @@ function hienthiphong(this_){
                             var item = new Option(i.tenPhong, i.id, true, true);
 
                             container.appendChild(item);
+
+
                           });
     				},
     				error : function(error) {

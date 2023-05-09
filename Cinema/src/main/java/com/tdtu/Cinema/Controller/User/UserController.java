@@ -71,7 +71,7 @@ public class UserController {
     }
 
     @GetMapping("/foodBill/{id}")
-    public  String food(Model model,@PathVariable("id") Long id){
+    public  String food(Model model,@PathVariable("id") Long id, HttpSession session){
 
         List<FoodEntity> listfood = foodService.getall();
         List<VeEntity> listVe = veService.getall();
@@ -86,6 +86,10 @@ public class UserController {
             }
         }
 
+        String sdt = (String)session.getAttribute("sdt");
+        UserEnity userEnity = userService.findBySdt(sdt).get();
+        model.addAttribute("user",userEnity);
+
         model.addAttribute("food", listfood);
         model.addAttribute("khuyenmai", listkms);
         model.addAttribute("ve", listVe);
@@ -94,7 +98,7 @@ public class UserController {
     }
 
     @GetMapping("/muave")
-    public  String muave(Model model,  HttpSession session){
+    public  String muave(Model model){
 
         List<PhimEntity> listphim = new ArrayList<>();
         listphim = phimService.findByTrangthai("đang chiếu");
@@ -104,7 +108,7 @@ public class UserController {
 
 
     @GetMapping("/comments/{id}")
-    public String comment(Model model,@PathVariable("id") Long id){
+    public String comment(Model model,@PathVariable("id") Long id, HttpSession session){
         PhimEntity phim = phimService.findOneById(id);
         model.addAttribute("film", phim);
 
@@ -114,7 +118,8 @@ public class UserController {
         model.addAttribute("phimtemp", top5);
 
 
-        UserEnity userEnity = userService.getonrbyid(3L);
+        String sdt = (String)session.getAttribute("sdt");
+        UserEnity userEnity = userService.findBySdt(sdt).get();
         model.addAttribute("user",userEnity);
 
         List<DanhGiaPhimEntity> listdanhgiaphim = danhGiaPhimService.getDanhGiaPhimByPhim(id);
@@ -127,13 +132,16 @@ public class UserController {
 
 
     @GetMapping("/inforuser")
-    public  String inforUser(Model model){
-        UserEnity userEnity = userService.getonrbyid(3L);
+    public  String inforUser(Model model, HttpSession session){
 
+        String sdt = (String)session.getAttribute("sdt");
+        System.out.println(sdt);
+        UserEnity userEnity = userService.findBySdt(sdt).get();
         List<ThanhToanEntity> list = thanhToanService.getTTUser(userEnity);
         model.addAttribute("soluongvedamua", list.size());
         model.addAttribute("thanhtoanuser",list );
         model.addAttribute("user",userEnity);
+
         return "/User/infoUser";
     }
 

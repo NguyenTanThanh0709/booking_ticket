@@ -5,6 +5,7 @@ import com.tdtu.Cinema.Entity.KhuyenMaiEntity;
 import com.tdtu.Cinema.Service.IFoodService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/admin")
+
 public class FoodAPIADMIN {
 
     @Autowired

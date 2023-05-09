@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+    <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
@@ -85,8 +85,8 @@
                 </div>
             </li>
 
-            <li>
-                <a th:href="@{/logout}">
+            <li >
+                <a th:href="@{/logout}" th:if="${session.sdt != null}">
                     <i
                             class="fa-solid fa-right-from-bracket icon logout-icon"
                     ></i>
@@ -97,10 +97,16 @@
 
         </div>
         <div class="user-icon">
-            <a th:href="@{/inforuser}">
+
+            <a th:href="@{/inforuser}" th:if="${session.sdt != null}">
                 <img th:src="@{../assets/user.png}"  alt="" />
                 <span class="text">Trần Tấn Thành</span>
             </a>
+
+            <a th:href="@{/login}" th:if="${session.sdt == null}">
+                <span class="fs-4 pb-2" >Login</span>
+            </a>
+
         </div>
     </div>
 </nav>
@@ -120,13 +126,13 @@
             <span class="nav-text text">Phim</span>
             <ul class="sub-menu-nav mid">
                 <li>
-                    <a href="#">
+                    <a href="/">
                         <i class="fa-solid fa-user icon sub-icon"></i>
                         <span class="sub-menu-text">Đang chiếu</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="/">
                         <i
                                 class="fa-solid fa-right-from-bracket icon logout-icon sub-icon"
                         ></i>
@@ -153,17 +159,24 @@
                     <span class="sub-menu-text">Dark Mode</span>
                 </li>
                 <li>
-                    <a th:href="@{/inforuser}"
+                    <a th:href="@{/inforuser}" th:if="${session.sdt != null}"
                     ><i class="fa-solid fa-user icon sub-icon"></i>
                         <span class="sub-menu-text">Thông tin</span></a
                     >
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="/logout" th:if="${session.sdt != null}">
                         <i
                                 class="fa-solid fa-right-from-bracket icon logout-icon sub-icon"
                         ></i>
                         <span class="sub-menu-text">Đăng xuất</span>
+                    </a>
+
+                    <a href="/login" th:if="${session.sdt == null}">
+                        <i
+                                class="fa-solid fa-right-from-bracket icon logout-icon sub-icon"
+                        ></i>
+                        <span class="sub-menu-text">Login</span>
                     </a>
                 </li>
             </ul>
@@ -287,11 +300,11 @@
         </a>
         <div class="d-flex align-items-center ms-4 mb-4">
             <div class="position-relative">
-                <img class="rounded-circle" src="admin/img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                <img class="rounded-circle" th:src="@{${user.avatar}}" alt="" style="width: 40px; height: 40px;">
                 <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
             </div>
             <div class="ms-3">
-                <h6 class="mb-0">Jhon Doe</h6>
+                <h6 class="mb-0">[[${user.user}]]</h6>
                 <span>Admin</span>
             </div>
         </div>
@@ -327,13 +340,11 @@
 
         <div class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                <img class="rounded-circle me-lg-2" src="admin/img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                <span class="d-none d-lg-inline-flex">John Doe</span>
+                <img class="rounded-circle me-lg-2" th:src="@{${user.avatar}}" alt="" style="width: 40px; height: 40px;">
+                <span class="d-none d-lg-inline-flex">[[${user.user}]]</span>
             </a>
             <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                <a href="#" class="dropdown-item">My Profile</a>
-                <a href="#" class="dropdown-item">Settings</a>
-                <a href="#" class="dropdown-item">Log Out</a>
+                <a th:href="@{/logout}" class="dropdown-item">Log Out</a>
             </div>
         </div>
     </div>

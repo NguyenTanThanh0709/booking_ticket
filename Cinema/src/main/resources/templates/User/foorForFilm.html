@@ -223,19 +223,19 @@
                         <div class="mb-1 row">
                             <label for="hovaten" class="col-sm-2 col-form-label">Họ Và Tên</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="hovaten">
+                                <input th:value="${user.user}" type="text" class="form-control" id="hovaten">
                             </div>
                         </div>
                         <div class="mb-1 row">
                             <label for="email" class="col-sm-2 col-form-label">Email</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="email">
+                                <input th:value="${user.email}" type="text" class="form-control" id="email">
                             </div>
                         </div>
                         <div class="mb-1 row">
                             <label for="sdt" class="col-sm-2 col-form-label">Số điện thoại</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="sdt">
+                                <input th:value="${user.sdt}" type="text" class="form-control" id="sdt">
                             </div>
                         </div>
                         <div class="mb-1 row">
